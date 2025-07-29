@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DevVibe</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Background blobs -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  <div class="bg-blob blob-3"></div>
+
+  <!-- Header Section -->
+  <div class="header">
+    <div class="time-greeting">
+      <div class="time" id="currentTime">12:34</div>
+      <div class="weather">
+        <span class="weather-icon">☀️</span>
+        <span class="temp">22°C</span>
+      </div>
+    </div>
+    
+    <div class="greeting">Good morning, Ashish!</div>
+    
+    <div class="dev-status">
+      <div class="avatar">👨‍💻</div>
+      <div class="status-info">
+        <h3>Ready to code</h3>
+        <div class="tagline">
+          <span id="typewriter">Full Stack Developer</span><span class="cursor">|</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Section -->
+  <div class="search-section">
+    <div class="search-container">
+      <div class="search-icon">🔍</div>
+      <input type="text" class="search-input" placeholder="Search projects, docs, or anything..." id="searchInput" />
+    </div>
+    
+    <div class="quick-actions">
+      <a href="#" class="action-btn">
+        <span class="action-icon">⚡</span>
+        <span>New Project</span>
+      </a>
+      <a href="#" class="action-btn">
+        <span class="action-icon">📋</span>
+        <span>Todo List</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="stats-section">
+    <div class="section-title">
+      <span>📊</span>
+      <span>Today's Activity</span>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-number" id="commitsToday">12</span>
+        <span class="stat-label">Commits</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="hoursToday">6.5</span>
+        <span class="stat-label">Hours</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="linesWritten">847</span>
+        <span class="stat-label">Lines</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Links Section -->
+  <div class="links-section">
+    <div class="section-title">
+      <span>🚀</span>
+      <span>Quick Access</span>
+    </div>
+    <div class="links-grid">
+      <a href="https://github.com/" target="_blank" class="link-tile">
+        <div class="link-icon">🐙</div>
+        <div class="link-label">GitHub</div>
+      </a>
+      <a href="https://linkedin.com/" target="_blank" class="link-tile">
+        <div class="link-icon">💼</div>
+        <div class="link-label">LinkedIn</div>
+      </a>
+      <a href="https://portfolio.com/" target="_blank" class="link-tile">
+        <div class="link-icon">🌐</div>
+        <div class="link-label">Portfolio</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="status-indicator">
+      <div class="dot"></div>
+      <span>Online</span>
+    </div>
+    <div>DevVibe v2.0</div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

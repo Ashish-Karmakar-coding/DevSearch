@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "DevVibeLanding",
+  "version": "1.0",
+  "description": "A cool developer-themed landing page in a Chrome extension popup.",
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
