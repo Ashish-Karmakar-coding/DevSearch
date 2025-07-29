@@ -7,106 +7,96 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Background blobs -->
-  <div class="bg-blob blob-1"></div>
-  <div class="bg-blob blob-2"></div>
-  <div class="bg-blob blob-3"></div>
+  <!-- Background animations -->
+  <div class="bg-animation">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+  
+  <div class="grid-overlay"></div>
 
-  <!-- Header Section -->
-  <div class="header">
-    <div class="time-greeting">
-      <div class="time" id="currentTime">12:34</div>
-      <div class="weather">
-        <span class="weather-icon">☀️</span>
-        <span class="temp">22°C</span>
-      </div>
-    </div>
-    
-    <div class="greeting">Good morning, Ashish!</div>
-    
-    <div class="dev-status">
-      <div class="avatar">👨‍💻</div>
-      <div class="status-info">
-        <h3>Ready to code</h3>
-        <div class="tagline">
-          <span id="typewriter">Full Stack Developer</span><span class="cursor">|</span>
-        </div>
-      </div>
-    </div>
+  <!-- Loading spinner -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
   </div>
 
-  <!-- Search Section -->
-  <div class="search-section">
-    <div class="search-container">
-      <div class="search-icon">🔍</div>
-      <input type="text" class="search-input" placeholder="Search projects, docs, or anything..." id="searchInput" />
-    </div>
-    
-    <div class="quick-actions">
-      <a href="#" class="action-btn">
-        <span class="action-icon">⚡</span>
-        <span>New Project</span>
-      </a>
-      <a href="#" class="action-btn">
-        <span class="action-icon">📋</span>
-        <span>Todo List</span>
-      </a>
-    </div>
-  </div>
+  <!-- Main container -->
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1 class="logo">DevVibe</h1>
+      <p class="tagline">Your Developer-Focused Search Experience</p>
+      <p class="subtitle">
+        > <span id="typewriter">Search the web like a pro</span><span class="typing-cursor">|</span>
+      </p>
+    </header>
 
-  <!-- Stats Section -->
-  <div class="stats-section">
-    <div class="section-title">
-      <span>📊</span>
-      <span>Today's Activity</span>
-    </div>
-    <div class="stats-grid">
-      <div class="stat-card">
-        <span class="stat-number" id="commitsToday">12</span>
-        <span class="stat-label">Commits</span>
+    <!-- Search section -->
+    <section class="search-section">
+      <div class="search-container">
+        <input 
+          type="text" 
+          class="search-box" 
+          placeholder="Search anything on Google..." 
+          id="searchInput"
+          autocomplete="off"
+        />
+        <div class="search-icon">🔍</div>
+        <button class="search-button" id="searchButton">Search</button>
       </div>
-      <div class="stat-card">
-        <span class="stat-number" id="hoursToday">6.5</span>
-        <span class="stat-label">Hours</span>
+
+      <!-- Quick suggestions -->
+      <div class="suggestions">
+        <span class="suggestion-tag" data-query="React hooks tutorial">React Hooks</span>
+        <span class="suggestion-tag" data-query="JavaScript ES6 features">ES6 Features</span>
+        <span class="suggestion-tag" data-query="CSS Grid layout guide">CSS Grid</span>
+        <span class="suggestion-tag" data-query="Node.js best practices">Node.js Tips</span>
+        <span class="suggestion-tag" data-query="Python data structures">Python DS</span>
+        <span class="suggestion-tag" data-query="TypeScript tutorial">TypeScript</span>
+        <span class="suggestion-tag" data-query="Git commands cheat sheet">Git Commands</span>
+        <span class="suggestion-tag" data-query="Docker containers guide">Docker</span>
       </div>
-      <div class="stat-card">
-        <span class="stat-number" id="linesWritten">847</span>
-        <span class="stat-label">Lines</span>
+    </section>
+
+    <!-- Quick actions -->
+    <section class="quick-actions">
+      <a href="https://github.com" target="_blank" class="action-card">
+        <span class="action-icon">🐙</span>
+        <h3 class="action-title">GitHub</h3>
+        <p class="action-description">Explore repositories and code</p>
+      </a>
+      
+      <a href="https://stackoverflow.com" target="_blank" class="action-card">
+        <span class="action-icon">💬</span>
+        <h3 class="action-title">Stack Overflow</h3>
+        <p class="action-description">Find programming solutions</p>
+      </a>
+      
+      <a href="https://developer.mozilla.org" target="_blank" class="action-card">
+        <span class="action-icon">📚</span>
+        <h3 class="action-title">MDN Docs</h3>
+        <p class="action-description">Web development reference</p>
+      </a>
+      
+      <a href="https://codepen.io" target="_blank" class="action-card">
+        <span class="action-icon">✨</span>
+        <h3 class="action-title">CodePen</h3>
+        <p class="action-description">Frontend playground</p>
+      </a>
+    </section>
+
+    <!-- Developer info -->
+    <div class="dev-info">
+      <div class="dev-avatar">👨‍💻</div>
+      <div class="dev-details">
+        <h3>Ashish Karmakar</h3>
+        <p>Full Stack Developer</p>
       </div>
+      <div class="status-dot"></div>
     </div>
   </div>
-
-  <!-- Links Section -->
-  <div class="links-section">
-    <div class="section-title">
-      <span>🚀</span>
-      <span>Quick Access</span>
-    </div>
-    <div class="links-grid">
-      <a href="https://github.com/" target="_blank" class="link-tile">
-        <div class="link-icon">🐙</div>
-        <div class="link-label">GitHub</div>
-      </a>
-      <a href="https://linkedin.com/" target="_blank" class="link-tile">
-        <div class="link-icon">💼</div>
-        <div class="link-label">LinkedIn</div>
-      </a>
-      <a href="https://portfolio.com/" target="_blank" class="link-tile">
-        <div class="link-icon">🌐</div>
-        <div class="link-label">Portfolio</div>
-      </a>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <div class="status-indicator">
-      <div class="dot"></div>
-      <span>Online</span>
-    </div>
-    <div>DevVibe v2.0</div>
-  </div>
-
   <script src="script.js"></script>
 </body>
 </html>

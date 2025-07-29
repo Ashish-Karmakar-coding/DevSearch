@@ -1,23 +1,10 @@
-  // Update time
-    function updateTime() {
-      const now = new Date();
-      const timeString = now.toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit',
-        hour12: false 
-      });
-      document.getElementById('currentTime').textContent = timeString;
-    }
-
-    // Typewriter effect
+  // Typewriter effect
     const phrases = [
-      "Full Stack Developer",
-      "React Enthusiast",
-      "Node.js Expert", 
-      "TypeScript Advocate",
-      "Open Source Contributor",
-      "Problem Solver",
-      "Code Architect"
+      "Search the web like a pro",
+      "Find code solutions instantly",
+      "Explore development resources",
+      "Discover new technologies",
+      "Learn and grow as a developer"
     ];
 
     let phraseIndex = 0;
@@ -48,75 +35,136 @@
       }
     }
 
-    // Animate stats numbers
-    function animateNumber(element, target, duration = 1000) {
-      const start = 0;
-      const startTime = performance.now();
+    // Create floating particles
+    function createParticle() {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 5 + 's';
+      particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
       
-      function update(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const current = Math.floor(start + (target - start) * progress);
-        
-        element.textContent = current;
-        
-        if (progress < 1) {
-          requestAnimationFrame(update);
-        } else {
-          element.textContent = target;
-        }
-      }
+      const colors = ['#00d4ff', '#06ffa5', '#ffffff', '#ff6b6b'];
+      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+      particle.style.boxShadow = `0 0 10px ${particle.style.background}`;
       
-      requestAnimationFrame(update);
+      document.querySelector('.bg-animation').appendChild(particle);
+      
+      setTimeout(() => {
+        particle.remove();
+      }, 20000);
     }
 
     // Search functionality
-    document.getElementById('searchInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        const query = this.value.trim();
-        if (query) {
-          // Add visual feedback
-          this.style.background = 'rgba(78, 205, 196, 0.2)';
-          this.style.borderColor = '#4ecdc4';
-          
-          setTimeout(() => {
-            this.style.background = 'rgba(255, 255, 255, 0.08)';
-            this.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-            console.log('Searching for:', query);
-          }, 300);
-        }
-      }
-    });
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-      updateTime();
-      setInterval(updateTime, 1000);
+    function performSearch(query) {
+      if (!query.trim()) return;
       
+      // Show loading
+      document.getElementById('loading').classList.add('active');
+      
+      // Simulate search delay for better UX
       setTimeout(() => {
-        typeWriter();
+        const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        window.open(searchUrl, '_blank');
+        document.getElementById('loading').classList.remove('active');
       }, 500);
-      
-      // Animate stats after a delay
-      setTimeout(() => {
-        animateNumber(document.getElementById('commitsToday'), 12, 800);
-        animateNumber(document.getElementById('hoursToday'), 6, 1000);
-        animateNumber(document.getElementById('linesWritten'), 847, 1200);
-      }, 1000);
-    });
-
-    // Greeting based on time
-    function updateGreeting() {
-      const hour = new Date().getHours();
-      const greetingElement = document.querySelector('.greeting');
-      
-      if (hour < 12) {
-        greetingElement.textContent = 'Good morning, Ashish!';
-      } else if (hour < 17) {
-        greetingElement.textContent = 'Good afternoon, Ashish!';
-      } else {
-        greetingElement.textContent = 'Good evening, Ashish!';
-      }
     }
 
-    updateGreeting();
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchInput');
+      const searchButton = document.getElementById('searchButton');
+      const suggestions = document.querySelectorAll('.suggestion-tag');
+
+      // Start typewriter effect
+      setTimeout(typeWriter, 1000);
+
+      // Create particles periodically
+      setInterval(createParticle, 2000);
+      
+      // Create initial particles
+      for (let i = 0; i < 5; i++) {
+        setTimeout(createParticle, i * 400);
+      }
+
+      // Search button click
+      searchButton.addEventListener('click', () => {
+        performSearch(searchInput.value);
+      });
+
+      // Enter key search
+      searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          performSearch(searchInput.value);
+        }
+      });
+
+      // Search input animations
+      searchInput.addEventListener('focus', () => {
+        searchInput.parentElement.style.transform = 'scale(1.02)';
+      });
+
+      searchInput.addEventListener('blur', () => {
+        searchInput.parentElement.style.transform = 'scale(1)';
+      });
+
+      // Suggestion tags
+      suggestions.forEach(tag => {
+        tag.addEventListener('click', () => {
+          const query = tag.getAttribute('data-query');
+          searchInput.value = query;
+          performSearch(query);
+        });
+      });
+
+      // Add search suggestions on input
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value;
+        if (query.length > 2) {
+          // You could add real-time search suggestions here
+          console.log('Searching for:', query);
+        }
+      });
+    });
+
+    // Add some interactive hover effects
+    document.querySelectorAll('.action-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-8px) scale(1.02) rotateX(5deg)';
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) scale(1) rotateX(0deg)';
+      });
+    });
+
+    // Random particle colors
+    function getRandomColor() {
+      const colors = ['#00d4ff', '#06ffa5', '#ff6b6b', '#ffd93d', '#a8e6cf'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    // Enhanced particle creation with random properties
+    function createEnhancedParticle() {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      
+      // Random position and properties
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.width = (Math.random() * 3 + 1) + 'px';
+      particle.style.height = particle.style.width;
+      particle.style.background = getRandomColor();
+      particle.style.animationDelay = Math.random() * 5 + 's';
+      particle.style.animationDuration = (Math.random() * 8 + 12) + 's';
+      particle.style.opacity = Math.random() * 0.5 + 0.3;
+      
+      document.querySelector('.bg-animation').appendChild(particle);
+      
+      setTimeout(() => {
+        if (particle.parentNode) {
+          particle.remove();
+        }
+      }, 20000);
+    }
+
+    // Create enhanced particles
+    setInterval(createEnhancedParticle, 1500);
