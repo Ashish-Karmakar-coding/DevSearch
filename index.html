@@ -182,13 +182,102 @@
             background: var(--hacker-green);
             color: var(--hacker-dark);
         }
+
+        .todo-sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            height: 100%;
+            width: 280px;
+            background: rgba(34, 34, 34, 0.85);
+            border-right: 1px solid var(--hacker-green);
+            transition: left 0.3s ease;
+            z-index: 99;
+            padding: 10px;
+            box-sizing: border-box;
+            backdrop-filter: blur(5px);
+        }
+
+        .todo-button {
+            position: fixed;
+            left: 20px;
+            top: 20px;
+            padding: 0.8rem 1.2rem;
+            background: rgba(34, 34, 34, 0.85);
+            border: 1px solid var(--hacker-green);
+            color: var(--hacker-green);
+            font-family: var(--terminal-font);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .todo-button:hover {
+            background: rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            transform: translateX(5px);
+        }
+
+        .todo-sidebar.active {
+            left: 0;
+        }
+
+        .todo-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .todo-close {
+            background: none;
+            border: none;
+            color: var(--hacker-green);
+            cursor: pointer;
+        }
+
+        #todo-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        #todo-list li {
+            padding: 5px;
+            margin: 5px 0;
+            border-bottom: 1px dashed var(--hacker-green);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #todo-list li button {
+            background: none;
+            border: none;
+            color: var(--hacker-green);
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <canvas id="matrix-rain" class="matrix-rain"></canvas>
 
+    <div id="todo-sidebar" class="todo-sidebar">
+        <div class="todo-header">
+            <span>TASK LIST</span>
+            <button id="close-todo" class="todo-close">X</button>
+        </div>
+        <div class="todo-content">
+            <input type="text" id="todo-input" placeholder="NEW TASK..." class="search-input">
+            <button id="add-todo" class="search-button">ADD</button>
+            <ul id="todo-list"></ul>
+        </div>
+    </div>
+
     <div class="terminal">
         <div class="header">
+            <button id="todo-toggle" class="todo-button">TASKS</button>
             <div class="title">HACKER TERMINAL</div>
             <div class="subtitle">ACCESS GRANTED [ADMIN]</div>
         </div>
@@ -217,11 +306,11 @@
         </div>
 
         <div class="quick-links">
-            <a href="https://github.com" class="quick-link" target="_blank">GITHUB</a>
-            <a href="https://stackoverflow.com" class="quick-link" target="_blank">STACKOVERFLOW</a>
-            <a href="https://news.ycombinator.com" class="quick-link" target="_blank">HACKER NEWS</a>
-            <a href="https://www.python.org" class="quick-link" target="_blank">PYTHON</a>
-            <a href="https://kernel.org" class="quick-link" target="_blank">LINUX</a>
+            <a href="https://youtube.com" class="quick-link" target="_blank">YOUTUBE</a>
+            <a href="https://facebook.com" class="quick-link" target="_blank">FACEBOOK</a>
+            <a href="https://mail.google.com" class="quick-link" target="_blank">GMAIL</a>
+            <a href="https://instagram.com" class="quick-link" target="_blank">INSTAGRAM</a>
+            <a href="https://netflix.com" class="quick-link" target="_blank">NETFLIX</a>
         </div>
 
         <div class="social-links">
@@ -327,6 +416,38 @@
         }
         
         setTimeout(randomCommand, 3000);
+
+        // TODO List Functionality
+        document.getElementById('todo-toggle').addEventListener('click', () => {
+            document.getElementById('todo-sidebar').classList.toggle('active');
+        });
+
+        document.getElementById('close-todo').addEventListener('click', () => {
+            document.getElementById('todo-sidebar').classList.remove('active');
+        });
+
+        document.getElementById('add-todo').addEventListener('click', addTodo);
+        document.getElementById('todo-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTodo();
+        });
+
+        function addTodo() {
+            const input = document.getElementById('todo-input');
+            const task = input.value.trim();
+            if (task) {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${task}</span>
+                    <button class="delete-todo">X</button>
+                `;
+                document.getElementById('todo-list').appendChild(li);
+                input.value = '';
+                
+                li.querySelector('.delete-todo').addEventListener('click', () => {
+                    li.remove();
+                });
+            }
+        }
     </script>
 </body>
 </html>

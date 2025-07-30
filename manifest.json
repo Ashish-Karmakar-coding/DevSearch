@@ -1,9 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "DevVibeLanding",
+  "name": "Hacker Terminal New Tab",
   "version": "1.0",
-  "description": "A cool developer-themed landing page in a Chrome extension popup.",
-  "action": {
-    "default_popup": "popup.html"
-  }
+  "description": "Hacker-themed new tab page with task list and integrated search",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": [
+    "storage"
+  ]
 }
