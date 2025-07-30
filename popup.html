@@ -3,926 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Search Portal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Hacker Terminal</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
-        * {
+        :root {
+            --hacker-green: #00ff00;
+            --hacker-dark: #0a0a0a;
+            --hacker-gray: #222222;
+            --terminal-font: 'Courier New', monospace;
+        }
+
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(to bottom, #72a3d1 0%, #72a3d1 50%, #5d7c46 50%, #5d7c46 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            padding: 20px;
+            background-color: var(--hacker-dark);
+            color: var(--hacker-green);
+            font-family: var(--terminal-font);
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #fff;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
-            transition: background 1s ease;
         }
-        
-        body.night-mode {
-            background: linear-gradient(to bottom, #0a1120 0%, #0a1120 60%, #1c2c3a 60%, #1c2c3a 100%);
+
+        .terminal {
+            width: 90%;
+            max-width: 800px;
+            margin-top: 2rem;
         }
-        
+
         .header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            margin-bottom: 50px;
-            z-index: 10;
-        }
-        
-        .time-date {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            border: 3px solid #5a5a5a;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
-            z-index: 10;
-        }
-        
-        .theme-toggle {
-            background: #7caf5a;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            border-bottom: 4px solid #5d7c46;
-            transition: all 0.3s;
-            z-index: 10;
-        }
-        
-        .theme-toggle:hover {
-            background: #8fbf6a;
-            transform: translateY(-2px);
-        }
-        
-        .search-history {
-            position: absolute;
-            top: 60px;
-            right: 30px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 3px solid #5a5a5a;
-            border-radius: 8px;
-            padding: 10px;
-            width: 250px;
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 20;
-            display: none;
-        }
-        
-        .search-history h3 {
-            margin-bottom: 10px;
             text-align: center;
-            color: #7caf5a;
+            margin-bottom: 2rem;
+            position: relative;
         }
-        
-        .history-list {
-            list-style: none;
+
+        .title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 5px var(--hacker-green);
         }
-        
-        .history-list li {
-            padding: 8px 5px;
-            border-bottom: 1px solid #5a5a5a;
-            cursor: pointer;
-            transition: all 0.2s;
+
+        .subtitle {
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
         }
-        
-        .history-list li:hover {
-            background: rgba(124, 175, 90, 0.3);
-        }
-        
-        .history-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .logo {
-            text-align: center;
-            margin: 30px 0 50px;
-            z-index: 10;
-        }
-        
-        .logo h1 {
-            font-size: 4rem;
-            letter-spacing: 3px;
-            color: #f0f0f0;
-            text-shadow: 
-                3px 3px 0 #3a3a3a,
-                6px 6px 0 #2a2a2a;
-            margin-bottom: 10px;
-        }
-        
-        .logo p {
-            font-size: 1.2rem;
-            color: #e0e0e0;
-            text-shadow: 2px 2px 0 #3a3a3a;
-        }
-        
+
         .search-container {
             width: 100%;
-            max-width: 600px;
-            margin: 0 auto 50px;
-            position: relative;
-            z-index: 10;
+            margin-bottom: 2rem;
         }
-        
-        .search-box {
-            width: 100%;
-            padding: 20px;
-            font-size: 1.2rem;
-            border: 4px solid #5a5a5a;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 
-                inset 0 0 10px rgba(0, 0, 0, 0.2),
-                0 8px 0 #4a4a4a;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        
-        .search-box:focus {
-            background: #ffffff;
-            box-shadow: 
-                inset 0 0 10px rgba(0, 0, 0, 0.2),
-                0 8px 0 #4a4a4a,
-                0 0 15px rgba(100, 200, 255, 0.8);
-        }
-        
-        .search-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        
-        .search-btn {
-            padding: 12px 25px;
-            font-size: 1.1rem;
-            background: #7caf5a;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            border-bottom: 4px solid #5d7c46;
-            transition: all 0.2s ease;
-            font-weight: bold;
-        }
-        
-        .search-btn:hover {
-            background: #8fbf6a;
-            transform: translateY(-2px);
-        }
-        
-        .search-btn:active {
-            transform: translateY(2px);
-            border-bottom-width: 2px;
-        }
-        
-        .quick-links {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            max-width: 900px;
-            margin-top: 30px;
-            z-index: 10;
-        }
-        
-        .link-item {
+
+        .search-form {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: white;
-            transition: transform 0.3s ease;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            border-radius: 12px;
-            border: 3px solid #5a5a5a;
-            z-index: 10;
+            gap: 1rem;
         }
-        
-        .link-item:hover {
-            transform: scale(1.1);
-            background: rgba(0, 0, 0, 0.3);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+        .search-input {
+            background: var(--hacker-gray);
+            border: 1px solid var(--hacker-green);
+            color: var(--hacker-green);
+            padding: 0.5rem 1rem;
+            font-family: var(--terminal-font);
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
         }
-        
-        .minecraft-icon {
-            width: 80px;
-            height: 80px;
-            background: #8f8f8f;
-            border: 4px solid #5a5a5a;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            font-size: 2.5rem;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--hacker-green);
+        }
+
+        .search-button {
+            background: var(--hacker-gray);
+            border: 1px solid var(--hacker-green);
+            color: var(--hacker-green);
+            padding: 0.5rem 1rem;
+            font-family: var(--terminal-font);
+            font-size: 1rem;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
-        
-        .link-item:hover .minecraft-icon {
-            transform: rotate(5deg) scale(1.1);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+
+        .search-button:hover {
+            background: var(--hacker-green);
+            color: var(--hacker-dark);
         }
-        
-        .link-item span {
-            font-size: 1.1rem;
+
+        .clock-container {
+            margin: 2rem 0;
             text-align: center;
-            font-weight: bold;
         }
-        
-        .grass-decoration {
-            position: fixed;
-            bottom: 0;
+
+        .clock {
+            font-size: 1.5rem;
+            letter-spacing: 0.2rem;
+            text-shadow: 0 0 5px var(--hacker-green);
+            position: relative;
+        }
+
+        .clock::before {
+            content: "[ SYSTEM TIME ]";
+            position: absolute;
+            top: -1.5rem;
             left: 0;
-            width: 100%;
-            height: 60px;
-            background-image: 
-                linear-gradient(to bottom, #5d7c46, #7caf5a 10px, #5d7c46 10px, #5d7c46 20px, #7caf5a 20px, #7caf5a 30px, #5d7c46 30px, #5d7c46 40px, #7caf5a 40px, #7caf5a 50px, #5d7c46 50px, #5d7c46 60px);
-            background-size: 100% 60px;
-            z-index: 1;
+            right: 0;
+            font-size: 0.8rem;
+            opacity: 0.7;
         }
-        
-        .night-mode .grass-decoration {
-            background-image: 
-                linear-gradient(to bottom, #1c2c3a, #2a3d4d 10px, #1c2c3a 10px, #1c2c3a 20px, #2a3d4d 20px, #2a3d4d 30px, #1c2c3a 30px, #1c2c3a 40px, #2a3d4d 40px, #2a3d4d 50px, #1c2c3a 50px, #1c2c3a 60px);
-        }
-        
-        .minecraft-creeper {
-            position: fixed;
-            bottom: 60px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: 
-                linear-gradient(135deg, #5d7c46 25%, transparent 25%) -10px 0,
-                linear-gradient(225deg, #5d7c46 25%, transparent 25%) -10px 0,
-                linear-gradient(315deg, #5d7c46 25%, transparent 25%),
-                linear-gradient(45deg, #5d7c46 25%, transparent 25%);
-            background-size: 20px 20px;
-            border-radius: 8px;
+
+        .social-links {
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            color: #333;
-            z-index: 5;
-            animation: float 4s ease-in-out infinite;
+            gap: 1.5rem;
+            margin-top: 3rem;
         }
-        
-        .night-mode .minecraft-creeper {
-            background: 
-                linear-gradient(135deg, #2a3d4d 25%, transparent 25%) -10px 0,
-                linear-gradient(225deg, #2a3d4d 25%, transparent 25%) -10px 0,
-                linear-gradient(315deg, #2a3d4d 25%, transparent 25%),
-                linear-gradient(45deg, #2a3d4d 25%, transparent 25%);
-            color: #5d7c46;
+
+        .social-link {
+            color: var(--hacker-green);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
         }
-        
-        .footer {
-            margin-top: auto;
-            padding: 20px;
-            text-align: center;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.8);
-            z-index: 10;
+
+        .social-link:hover {
+            color: white;
+            transform: scale(1.2);
         }
-        
-        /* Background elements */
-        .background {
-            position: fixed;
+
+        .terminal-line {
+            margin-bottom: 0.2rem;
+        }
+
+        .command {
+            color: var(--hacker-green);
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .matrix-rain {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 0;
+            z-index: -1;
+            opacity: 0.3;
         }
-        
-        .mountain {
-            position: absolute;
-            bottom: 60px;
-            width: 300px;
-            height: 150px;
-            background: #4a6340;
-            clip-path: polygon(0% 100%, 20% 50%, 40% 70%, 60% 30%, 80% 60%, 100% 100%);
-            z-index: 2;
+
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
         }
-        
-        .mountain:nth-child(1) {
-            left: 10%;
+
+        .quick-link {
+            background: var(--hacker-gray);
+            border: 1px solid var(--hacker-green);
+            color: var(--hacker-green);
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
         }
-        
-        .mountain:nth-child(2) {
-            left: 40%;
-            height: 200px;
-            background: #3a5230;
-        }
-        
-        .mountain:nth-child(3) {
-            left: 70%;
-            height: 180px;
-            background: #435a38;
-        }
-        
-        .tree {
-            position: absolute;
-            bottom: 60px;
-            width: 40px;
-            height: 120px;
-            z-index: 3;
-        }
-        
-        .tree-trunk {
-            position: absolute;
-            bottom: 0;
-            left: 15px;
-            width: 10px;
-            height: 40px;
-            background: #5d4037;
-        }
-        
-        .tree-leaves {
-            position: absolute;
-            bottom: 40px;
-            left: 0;
-            width: 40px;
-            height: 80px;
-            background: #4caf50;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        }
-        
-        .tree:nth-child(4) { left: 5%; }
-        .tree:nth-child(5) { left: 20%; height: 150px; }
-        .tree:nth-child(6) { left: 35%; }
-        .tree:nth-child(7) { left: 55%; height: 140px; }
-        .tree:nth-child(8) { left: 75%; }
-        .tree:nth-child(9) { left: 90%; height: 160px; }
-        
-        /* Characters */
-        .villager {
-            position: absolute;
-            bottom: 70px;
-            width: 30px;
-            height: 50px;
-            z-index: 4;
-            animation: walk 15s linear infinite;
-        }
-        
-        .villager-head {
-            position: absolute;
-            top: 0;
-            left: 5px;
-            width: 20px;
-            height: 20px;
-            background: #f0c090;
-            border-radius: 5px;
-        }
-        
-        .villager-body {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            width: 30px;
-            height: 30px;
-            background: #6b8cff;
-            border-radius: 5px;
-        }
-        
-        .cow {
-            position: absolute;
-            bottom: 70px;
-            width: 40px;
-            height: 30px;
-            z-index: 4;
-            animation: walk 20s linear infinite;
-        }
-        
-        .cow-body {
-            position: absolute;
-            width: 40px;
-            height: 25px;
-            background: #d0d0d0;
-            border-radius: 10px;
-        }
-        
-        .cow-head {
-            position: absolute;
-            left: 35px;
-            top: 5px;
-            width: 15px;
-            height: 15px;
-            background: #d0d0d0;
-            border-radius: 5px;
-        }
-        
-        .cow-spot {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #333;
-            border-radius: 50%;
-        }
-        
-        .ghost {
-            position: absolute;
-            width: 30px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 50% 50% 0 0;
-            z-index: 4;
-            animation: float 5s ease-in-out infinite;
-        }
-        
-        .ghost::before, .ghost::after {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 50%;
-            top: 10px;
-        }
-        
-        .ghost::before { left: 5px; }
-        .ghost::after { right: 5px; }
-        
-        .ghost:nth-child(1) { top: 20%; left: 10%; }
-        .ghost:nth-child(2) { top: 40%; left: 80%; animation-delay: 1s; }
-        .ghost:nth-child(3) { top: 70%; left: 30%; animation-delay: 2s; }
-        
-        /* Night elements */
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0;
-        }
-        
-        .night-mode .star {
-            opacity: 1;
-            animation: twinkle 3s infinite;
-        }
-        
-        .lamp-post {
-            position: absolute;
-            bottom: 60px;
-            width: 5px;
-            height: 80px;
-            background: #8d6e63;
-            z-index: 4;
-        }
-        
-        .lamp-light {
-            position: absolute;
-            bottom: 140px;
-            left: -10px;
-            width: 25px;
-            height: 25px;
-            background: #ffd54f;
-            border-radius: 50%;
-            box-shadow: 0 0 20px 10px rgba(255, 213, 79, 0.5);
-            opacity: 0;
-        }
-        
-        .night-mode .lamp-light {
-            opacity: 1;
-            animation: flicker 2s infinite;
-        }
-        
-        .campfire {
-            position: absolute;
-            bottom: 70px;
-            width: 20px;
-            height: 20px;
-            background: #ff5722;
-            border-radius: 50%;
-            box-shadow: 0 0 10px 5px rgba(255, 87, 34, 0.5);
-            opacity: 0;
-            z-index: 4;
-        }
-        
-        .night-mode .campfire {
-            opacity: 1;
-            animation: fire 1s infinite;
-        }
-        
-        /* Birds */
-        .bird {
-            position: absolute;
-            color: #333;
-            font-size: 24px;
-            z-index: 1;
-            animation: fly 20s linear infinite;
-        }
-        
-        .bird:nth-child(1) { top: 15%; left: -50px; animation-delay: 0s; }
-        .bird:nth-child(2) { top: 25%; left: -50px; animation-delay: 3s; }
-        .bird:nth-child(3) { top: 35%; left: -50px; animation-delay: 6s; }
-        
-        /* Animations */
-        @keyframes walk {
-            0% { transform: translateX(-100px); }
-            100% { transform: translateX(calc(100vw + 100px)); }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes fly {
-            0% { transform: translateX(0) translateY(0); }
-            25% { transform: translateX(25vw) translateY(-15px); }
-            50% { transform: translateX(50vw) translateY(0); }
-            75% { transform: translateX(75vw) translateY(-15px); }
-            100% { transform: translateX(100vw) translateY(0); }
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
-        }
-        
-        @keyframes flicker {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
-        
-        @keyframes fire {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        @media (max-width: 768px) {
-            .quick-links {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .logo h1 {
-                font-size: 3rem;
-            }
-            
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
-            
-            .search-history {
-                top: 120px;
-                right: 10px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .quick-links {
-                grid-template-columns: 1fr;
-            }
-            
-            .logo h1 {
-                font-size: 2.5rem;
-            }
-            
-            .background {
-                display: none;
-            }
+
+        .quick-link:hover {
+            background: var(--hacker-green);
+            color: var(--hacker-dark);
         }
     </style>
 </head>
 <body>
-    <!-- Background elements -->
-    <div class="background">
-        <!-- Mountains -->
-        <div class="mountain"></div>
-        <div class="mountain"></div>
-        <div class="mountain"></div>
-        
-        <!-- Trees -->
-        <div class="tree">
-            <div class="tree-trunk"></div>
-            <div class="tree-leaves"></div>
+    <canvas id="matrix-rain" class="matrix-rain"></canvas>
+
+    <div class="terminal">
+        <div class="header">
+            <div class="title">HACKER TERMINAL</div>
+            <div class="subtitle">ACCESS GRANTED [ADMIN]</div>
         </div>
-        <div class="tree">
-            <div class="tree-trunk"></div>
-            <div class="tree-leaves"></div>
+
+        <div class="search-container">
+            <form class="search-form" action="https://www.google.com/search" method="GET" target="_blank">
+                <input class="search-input" type="text" name="q" placeholder="SEARCH QUERY...">
+                <button class="search-button" type="submit">EXECUTE SEARCH</button>
+            </form>
         </div>
-        <div class="tree">
-            <div class="tree-trunk"></div>
-            <div class="tree-leaves"></div>
+
+        <div class="clock-container">
+            <div class="clock" id="clock">00:00:00</div>
         </div>
-        <div class="tree">
-            <div class="tree-trunk"></div>
-            <div class="tree-leaves"></div>
-        </div>
-        <div class="tree">
-            <div class="tree-trunk"></div>
-            <div class="tree-leaves"></div>
-        </div>
-        
-        <!-- Villagers -->
-        <div class="villager" style="left: 10%; animation-delay: 0s;">
-            <div class="villager-head"></div>
-            <div class="villager-body"></div>
-        </div>
-        <div class="villager" style="left: 30%; animation-delay: 3s; animation-duration: 18s;">
-            <div class="villager-head"></div>
-            <div class="villager-body"></div>
-        </div>
-        
-        <!-- Cows -->
-        <div class="cow" style="left: 20%; animation-delay: 5s;">
-            <div class="cow-body"></div>
-            <div class="cow-head"></div>
-            <div class="cow-spot" style="top: 5px; left: 10px;"></div>
-            <div class="cow-spot" style="top: 15px; left: 25px;"></div>
-        </div>
-        <div class="cow" style="left: 60%; animation-delay: 8s; animation-duration: 25s;">
-            <div class="cow-body"></div>
-            <div class="cow-head"></div>
-            <div class="cow-spot" style="top: 10px; left: 15px;"></div>
-            <div class="cow-spot" style="top: 5px; left: 30px;"></div>
-        </div>
-        
-        <!-- Ghosts -->
-        <div class="ghost"></div>
-        <div class="ghost"></div>
-        <div class="ghost"></div>
-        
-        <!-- Birds -->
-        <div class="bird">🐦</div>
-        <div class="bird">🦅</div>
-        <div class="bird">🦉</div>
-        
-        <!-- Lamp posts -->
-        <div class="lamp-post" style="left: 15%;">
-            <div class="lamp-light"></div>
-        </div>
-        <div class="lamp-post" style="left: 50%;">
-            <div class="lamp-light"></div>
-        </div>
-        <div class="lamp-post" style="left: 85%;">
-            <div class="lamp-light"></div>
-        </div>
-        
-        <!-- Campfires -->
-        <div class="campfire" style="left: 25%;"></div>
-        <div class="campfire" style="left: 65%;"></div>
-        
-        <!-- Stars -->
-        <div class="star" style="top: 10%; left: 5%;"></div>
-        <div class="star" style="top: 15%; left: 15%;"></div>
-        <div class="star" style="top: 20%; left: 25%;"></div>
-        <div class="star" style="top: 10%; left: 35%;"></div>
-        <div class="star" style="top: 25%; left: 45%;"></div>
-        <div class="star" style="top: 15%; left: 55%;"></div>
-        <div class="star" style="top: 30%; left: 65%;"></div>
-        <div class="star" style="top: 20%; left: 75%;"></div>
-        <div class="star" style="top: 10%; left: 85%;"></div>
-        <div class="star" style="top: 25%; left: 95%;"></div>
-    </div>
-    
-    <div class="header">
-        <div class="time-date">
-            <span id="time">00:00:00</span>
-            <span> | </span>
-            <span id="date">January 1, 2023</span>
-        </div>
-        <button class="theme-toggle" id="themeToggle">🌙 Night Mode</button>
-    </div>
-    
-    <div class="search-history" id="searchHistory">
-        <h3>Recent Searches</h3>
-        <ul class="history-list" id="historyList">
-            <!-- History items will be added here -->
-        </ul>
-    </div>
-    
-    <div class="logo">
-        <h1>MINECRAFT SEARCH</h1>
-        <p>Explore the blocky universe</p>
-    </div>
-    
-    <div class="search-container">
-        <input type="text" class="search-box" id="searchInput" placeholder="Search the Minecraft universe...">
-        <div class="search-buttons">
-            <button class="search-btn" id="googleSearch">Craft Search</button>
-            <button class="search-btn" id="feelingLucky">I'm Feeling Miner</button>
-        </div>
-    </div>
-    
-    <div class="quick-links">
-        <a href="https://www.youtube.com" class="link-item" target="_blank">
-            <div class="minecraft-icon" style="background: #FF0000; color: white;">
-                <i class="fab fa-youtube"></i>
+
+        <div class="terminal-text">
+            <div class="terminal-line">
+                <span class="command">SYSTEM STATUS:</span> OPERATIONAL
             </div>
-            <span>YouTube</span>
-        </a>
-        
-        <a href="https://www.github.com" class="link-item" target="_blank">
-            <div class="minecraft-icon" style="background: #333; color: white;">
-                <i class="fab fa-github"></i>
+            <div class="terminal-line">
+                <span class="command">NETWORK:</span> SECURE CONNECTION ESTABLISHED
             </div>
-            <span>GitHub</span>
-        </a>
-        
-        <a href="https://www.linkedin.com" class="link-item" target="_blank">
-            <div class="minecraft-icon" style="background: #0A66C2; color: white;">
-                <i class="fab fa-linkedin-in"></i>
+            <div class="terminal-line">
+                <span class="command">LAST LOGIN:</span> TODAY <span class="cursor">_</span>
             </div>
-            <span>LinkedIn</span>
-        </a>
-        
-        <a href="https://www.reddit.com/r/Minecraft" class="link-item" target="_blank">
-            <div class="minecraft-icon" style="background: #FF4500; color: white;">
-                <i class="fab fa-reddit"></i>
-            </div>
-            <span>Reddit</span>
-        </a>
-        
-        <a href="https://www.minecraft.net" class="link-item" target="_blank">
-            <div class="minecraft-icon" style="background: #5d7c46; color: #d0f0c0;">
-                <i class="fas fa-cube"></i>
-            </div>
-            <span>Minecraft.net</span>
-        </a>
-        
-        <a href="https://www.twitch.tv/directory/game/Minecraft" class="link-item" target="_blank">
-            <div class="minecraft-icon" style="background: #9146FF; color: white;">
-                <i class="fab fa-twitch"></i>
-            </div>
-            <span>Twitch</span>
-        </a>
-        
-        <a href="https://www.wikipedia.org" class="link-item" target="_blank">
-            <div class="minecraft-icon" style="background: #f0f0f0; color: #333;">
-                <i class="fab fa-wikipedia-w"></i>
-            </div>
-            <span>Wikipedia</span>
-        </a>
-        
-        <a href="https://store.steampowered.com" class="link-item" target="_blank">
-            <div class="minecraft-icon" style="background: #1b2838; color: #66c0f4;">
-                <i class="fab fa-steam"></i>
-            </div>
-            <span>Steam</span>
-        </a>
-    </div>
-    
-    <div class="grass-decoration"></div>
-    <div class="minecraft-creeper">C</div>
-    
-    <div class="footer">
-        <p>Made with ❤️ for Minecraft fans | Not affiliated with Mojang or Microsoft</p>
+        </div>
+
+        <div class="quick-links">
+            <a href="https://github.com" class="quick-link" target="_blank">GITHUB</a>
+            <a href="https://stackoverflow.com" class="quick-link" target="_blank">STACKOVERFLOW</a>
+            <a href="https://news.ycombinator.com" class="quick-link" target="_blank">HACKER NEWS</a>
+            <a href="https://www.python.org" class="quick-link" target="_blank">PYTHON</a>
+            <a href="https://kernel.org" class="quick-link" target="_blank">LINUX</a>
+        </div>
+
+        <div class="social-links">
+            <a href="https://twitter.com" class="social-link" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://github.com" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://linkedin.com" class="social-link" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://reddit.com" class="social-link" target="_blank"><i class="fab fa-reddit"></i></a>
+            <a href="https://discord.com" class="social-link" target="_blank"><i class="fab fa-discord"></i></a>
+        </div>
     </div>
 
     <script>
-        // Update time and date
-        function updateTime() {
-            const now = new Date();
-            const timeElement = document.getElementById('time');
-            const dateElement = document.getElementById('date');
-            
-            // Format time
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
-            
-            // Format date
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            dateElement.textContent = now.toLocaleDateString('en-US', options);
+        // Matrix rain effect
+        const canvas = document.getElementById('matrix-rain');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const symbols = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+        
+        const alphabet = katakana + latin + nums + symbols;
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        
+        const rainDrops = [];
+        
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
         }
         
-        // Initial call and set interval
-        updateTime();
-        setInterval(updateTime, 1000);
-        
-        // Theme toggle
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', function() {
-            document.body.classList.toggle('night-mode');
-            if (document.body.classList.contains('night-mode')) {
-                themeToggle.textContent = '☀️ Day Mode';
-            } else {
-                themeToggle.textContent = '🌙 Night Mode';
-            }
-        });
-        
-        // Search history functionality
-        let searchHistory = JSON.parse(localStorage.getItem('minecraftSearchHistory')) || [];
-        const searchHistoryElement = document.getElementById('searchHistory');
-        const historyList = document.getElementById('historyList');
-        
-        function updateSearchHistory() {
-            // Clear current list
-            historyList.innerHTML = '';
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Add items in reverse order (newest first)
-            searchHistory.slice().reverse().forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item;
-                li.addEventListener('click', function() {
-                    document.getElementById('searchInput').value = item;
-                    searchHistoryElement.style.display = 'none';
-                });
-                historyList.appendChild(li);
-            });
+            ctx.fillStyle = '#00FF00';
+            ctx.font = fontSize + 'px monospace';
             
-            // Save to localStorage
-            localStorage.setItem('minecraftSearchHistory', JSON.stringify(searchHistory));
-        }
-        
-        // Initialize history
-        updateSearchHistory();
-        
-        // Search functionality
-        function performSearch(feelingLucky = false) {
-            const query = document.getElementById('searchInput').value.trim();
-            if (query !== '') {
-                // Add to search history
-                if (!searchHistory.includes(query)) {
-                    searchHistory.push(query);
-                    if (searchHistory.length > 10) {
-                        searchHistory.shift(); // Remove oldest
-                    }
-                    updateSearchHistory();
-                }
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
                 
-                // Perform search
-                if (feelingLucky) {
-                    window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}&btnI=1`;
-                } else {
-                    window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
                 }
+                rainDrops[i]++;
+            }
+        };
+        
+        setInterval(draw, 30);
+
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+            
+            // Occasionally "glitch" the clock for hacking effect
+            if (Math.random() < 0.01) {
+                document.getElementById('clock').textContent = 
+                    `${Math.floor(Math.random() * 24)}:${Math.floor(Math.random() * 60)}:${Math.floor(Math.random() * 60)}`;
+                setTimeout(updateClock, 100);
+            } else {
+                setTimeout(updateClock, 1000);
             }
         }
         
-        document.getElementById('googleSearch').addEventListener('click', function() {
-            performSearch(false);
-        });
+        updateClock();
+
+        // Terminal typing effect
+        const commands = [
+            "SCANNING NETWORK...",
+            "ESTABLISHING SECURE CONNECTION...",
+            "RETRIEVING DATA...",
+            "COMPILING CODE...",
+            "RUNNING DIAGNOSTICS...",
+            "ACCESSING CACHE...",
+            "OPTIMIZING PERFORMANCE..."
+        ];
         
-        document.getElementById('feelingLucky').addEventListener('click', function() {
-            performSearch(true);
-        });
-        
-        // Handle Enter key in search box
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch(false);
+        function randomCommand() {
+            const terminalText = document.querySelector('.terminal-text');
+            const newLine = document.createElement('div');
+            newLine.className = 'terminal-line';
+            
+            newLine.innerHTML = `<span class="command">SYSTEM:</span> ${commands[Math.floor(Math.random() * commands.length)]}`;
+            
+            terminalText.appendChild(newLine);
+            
+            // Keep only last 5 lines
+            while (terminalText.children.length > 5) {
+                terminalText.removeChild(terminalText.firstChild);
             }
-        });
-        
-        // Show/hide search history
-        document.getElementById('searchInput').addEventListener('focus', function() {
-            searchHistoryElement.style.display = 'block';
-        });
-        
-        document.addEventListener('click', function(e) {
-            if (!searchHistoryElement.contains(e.target) ){
-                searchHistoryElement.style.display = 'none';
-            }
-        });
-        
-        // Add a focus effect to search box
-        const searchBox = document.getElementById('searchInput');
-        searchBox.addEventListener('focus', function() {
-            this.style.transform = 'scale(1.02)';
-        });
-        
-        searchBox.addEventListener('blur', function() {
-            this.style.transform = 'scale(1)';
-        });
-        
-        // Add some sample search history
-        if (searchHistory.length === 0) {
-            searchHistory = [
-                "Minecraft caves update",
-                "How to build a redstone door",
-                "Best Minecraft seeds 2023",
-                "Minecraft villager trading guide",
-                "Nether fortress locator"
-            ];
-            updateSearchHistory();
+            
+            setTimeout(randomCommand, 5000 + Math.random() * 10000);
         }
+        
+        setTimeout(randomCommand, 3000);
     </script>
 </body>
 </html>
