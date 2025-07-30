@@ -1,170 +1,125 @@
-  // Typewriter effect
-    const phrases = [
-      "Search the web like a pro",
-      "Find code solutions instantly",
-      "Explore development resources",
-      "Discover new technologies",
-      "Learn and grow as a developer"
-    ];
-
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-
-    function typeWriter() {
-      const element = document.getElementById("typewriter");
-      const currentPhrase = phrases[phraseIndex];
-      
-      if (!isDeleting && charIndex < currentPhrase.length) {
-        element.textContent += currentPhrase.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeWriter, Math.random() * 100 + 50);
-      } else if (isDeleting && charIndex > 0) {
-        element.textContent = currentPhrase.substring(0, charIndex - 1);
-        charIndex--;
-        setTimeout(typeWriter, 25);
-      } else if (!isDeleting && charIndex === currentPhrase.length) {
-        setTimeout(() => {
-          isDeleting = true;
-          typeWriter();
-        }, 2000);
-      } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-        setTimeout(typeWriter, 200);
-      }
-    }
-
-    // Create floating particles
-    function createParticle() {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      particle.style.left = Math.random() * 100 + '%';
-      particle.style.animationDelay = Math.random() * 5 + 's';
-      particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-      
-      const colors = ['#00d4ff', '#06ffa5', '#ffffff', '#ff6b6b'];
-      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-      particle.style.boxShadow = `0 0 10px ${particle.style.background}`;
-      
-      document.querySelector('.bg-animation').appendChild(particle);
-      
-      setTimeout(() => {
-        particle.remove();
-      }, 20000);
-    }
-
-    // Search functionality
-    function performSearch(query) {
-      if (!query.trim()) return;
-      
-      // Show loading
-      document.getElementById('loading').classList.add('active');
-      
-      // Simulate search delay for better UX
-      setTimeout(() => {
-        const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-        window.open(searchUrl, '_blank');
-        document.getElementById('loading').classList.remove('active');
-      }, 500);
-    }
-
-    // Event listeners
-    document.addEventListener('DOMContentLoaded', function() {
-      const searchInput = document.getElementById('searchInput');
-      const searchButton = document.getElementById('searchButton');
-      const suggestions = document.querySelectorAll('.suggestion-tag');
-
-      // Start typewriter effect
-      setTimeout(typeWriter, 1000);
-
-      // Create particles periodically
-      setInterval(createParticle, 2000);
-      
-      // Create initial particles
-      for (let i = 0; i < 5; i++) {
-        setTimeout(createParticle, i * 400);
-      }
-
-      // Search button click
-      searchButton.addEventListener('click', () => {
-        performSearch(searchInput.value);
-      });
-
-      // Enter key search
-      searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          performSearch(searchInput.value);
+   // Matrix rain effect
+        const canvas = document.getElementById('matrix-rain');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const symbols = '!"#$%&\'()*+,-./:;<=>?@[\\$^_`{|}~';
+        
+        const alphabet = katakana + latin + nums + symbols;
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        
+        const rainDrops = [];
+        
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
         }
-      });
+        
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00FF00';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+        
+        setInterval(draw, 30);
 
-      // Search input animations
-      searchInput.addEventListener('focus', () => {
-        searchInput.parentElement.style.transform = 'scale(1.02)';
-      });
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+            
+            // Occasionally "glitch" the clock for hacking effect
+            if (Math.random() < 0.01) {
+                document.getElementById('clock').textContent = 
+                    `${Math.floor(Math.random() * 24)}:${Math.floor(Math.random() * 60)}:${Math.floor(Math.random() * 60)}`;
+                setTimeout(updateClock, 100);
+            } else {
+                setTimeout(updateClock, 1000);
+            }
+        }
+        
+        updateClock();
 
-      searchInput.addEventListener('blur', () => {
-        searchInput.parentElement.style.transform = 'scale(1)';
-      });
+        // Terminal typing effect
+        const commands = [
+            "SCANNING NETWORK...",
+            "ESTABLISHING SECURE CONNECTION...",
+            "RETRIEVING DATA...",
+            "COMPILING CODE...",
+            "RUNNING DIAGNOSTICS...",
+            "ACCESSING CACHE...",
+            "OPTIMIZING PERFORMANCE..."
+        ];
+        
+        function randomCommand() {
+            const terminalText = document.querySelector('.terminal-text');
+            const newLine = document.createElement('div');
+            newLine.className = 'terminal-line';
+            
+            newLine.innerHTML = `<span class="command">SYSTEM:</span> ${commands[Math.floor(Math.random() * commands.length)]}`;
+            
+            terminalText.appendChild(newLine);
+            
+            // Keep only last 5 lines
+            while (terminalText.children.length > 5) {
+                terminalText.removeChild(terminalText.firstChild);
+            }
+            
+            setTimeout(randomCommand, 5000 + Math.random() * 10000);
+        }
+        
+        setTimeout(randomCommand, 3000);
 
-      // Suggestion tags
-      suggestions.forEach(tag => {
-        tag.addEventListener('click', () => {
-          const query = tag.getAttribute('data-query');
-          searchInput.value = query;
-          performSearch(query);
+        // TODO List Functionality
+        document.getElementById('todo-toggle').addEventListener('click', () => {
+            document.getElementById('todo-sidebar').classList.toggle('active');
         });
-      });
 
-      // Add search suggestions on input
-      searchInput.addEventListener('input', (e) => {
-        const query = e.target.value;
-        if (query.length > 2) {
-          // You could add real-time search suggestions here
-          console.log('Searching for:', query);
+        document.getElementById('close-todo').addEventListener('click', () => {
+            document.getElementById('todo-sidebar').classList.remove('active');
+        });
+
+        document.getElementById('add-todo').addEventListener('click', addTodo);
+        document.getElementById('todo-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTodo();
+        });
+
+        function addTodo() {
+            const input = document.getElementById('todo-input');
+            const task = input.value.trim();
+            if (task) {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${task}</span>
+                    <button class="delete-todo">X</button>
+                `;
+                document.getElementById('todo-list').appendChild(li);
+                input.value = '';
+                
+                li.querySelector('.delete-todo').addEventListener('click', () => {
+                    li.remove();
+                });
+            }
         }
-      });
-    });
-
-    // Add some interactive hover effects
-    document.querySelectorAll('.action-card').forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-8px) scale(1.02) rotateX(5deg)';
-      });
-      
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0) scale(1) rotateX(0deg)';
-      });
-    });
-
-    // Random particle colors
-    function getRandomColor() {
-      const colors = ['#00d4ff', '#06ffa5', '#ff6b6b', '#ffd93d', '#a8e6cf'];
-      return colors[Math.floor(Math.random() * colors.length)];
-    }
-
-    // Enhanced particle creation with random properties
-    function createEnhancedParticle() {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      
-      // Random position and properties
-      particle.style.left = Math.random() * 100 + '%';
-      particle.style.width = (Math.random() * 3 + 1) + 'px';
-      particle.style.height = particle.style.width;
-      particle.style.background = getRandomColor();
-      particle.style.animationDelay = Math.random() * 5 + 's';
-      particle.style.animationDuration = (Math.random() * 8 + 12) + 's';
-      particle.style.opacity = Math.random() * 0.5 + 0.3;
-      
-      document.querySelector('.bg-animation').appendChild(particle);
-      
-      setTimeout(() => {
-        if (particle.parentNode) {
-          particle.remove();
-        }
-      }, 20000);
-    }
-
-    // Create enhanced particles
-    setInterval(createEnhancedParticle, 1500);
