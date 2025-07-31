@@ -41,6 +41,116 @@
         
         setInterval(draw, 30);
 
+        // Settings functionality
+        let settings = {
+            primaryColor: '#33ff33',
+            backgroundColor: '#000000',
+            secondaryColor: '#111111',
+            timezone: 'local',
+            matrixRain: true,
+            clockGlitch: true,
+            terminalMessages: true,
+            youtubeLink: 'https://youtube.com',
+            githubLink: 'https://github.com',
+            emailLink: 'https://mail.google.com'
+        };
+
+        // Load settings from localStorage
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('hackerTerminalSettings');
+            if (savedSettings) {
+                settings = { ...settings, ...JSON.parse(savedSettings) };
+            }
+            applySettings();
+        }
+
+        // Save settings to localStorage
+        function saveSettings() {
+            localStorage.setItem('hackerTerminalSettings', JSON.stringify(settings));
+        }
+
+        // Apply settings to the interface
+        function applySettings() {
+            // Update CSS variables
+            document.documentElement.style.setProperty('--hacker-green', settings.primaryColor);
+            document.documentElement.style.setProperty('--hacker-dark', settings.backgroundColor);
+            document.documentElement.style.setProperty('--hacker-gray', settings.secondaryColor);
+            
+            // Update quick links
+            const youtubeLink = document.querySelector('.quick-link[href*="youtube"]');
+            const githubLink = document.querySelector('.social-link[href*="github"]');
+            if (youtubeLink) youtubeLink.href = settings.youtubeLink;
+            if (githubLink) githubLink.href = settings.githubLink;
+            
+            // Update matrix rain
+            if (!settings.matrixRain) {
+                canvas.style.display = 'none';
+            } else {
+                canvas.style.display = 'block';
+            }
+            
+            // Update settings form
+            document.getElementById('primary-color').value = settings.primaryColor;
+            document.getElementById('bg-color').value = settings.backgroundColor;
+            document.getElementById('secondary-color').value = settings.secondaryColor;
+            document.getElementById('timezone-select').value = settings.timezone;
+            document.getElementById('matrix-toggle').checked = settings.matrixRain;
+            document.getElementById('glitch-toggle').checked = settings.clockGlitch;
+            document.getElementById('terminal-toggle').checked = settings.terminalMessages;
+            document.getElementById('youtube-link').value = settings.youtubeLink;
+            document.getElementById('github-link').value = settings.githubLink;
+            document.getElementById('email-link').value = settings.emailLink;
+        }
+
+        // Initialize settings
+        loadSettings();
+
+        // Settings event listeners
+        document.getElementById('save-settings').addEventListener('click', () => {
+            settings.primaryColor = document.getElementById('primary-color').value;
+            settings.backgroundColor = document.getElementById('bg-color').value;
+            settings.secondaryColor = document.getElementById('secondary-color').value;
+            settings.timezone = document.getElementById('timezone-select').value;
+            settings.matrixRain = document.getElementById('matrix-toggle').checked;
+            settings.clockGlitch = document.getElementById('glitch-toggle').checked;
+            settings.terminalMessages = document.getElementById('terminal-toggle').checked;
+            settings.youtubeLink = document.getElementById('youtube-link').value;
+            settings.githubLink = document.getElementById('github-link').value;
+            settings.emailLink = document.getElementById('email-link').value;
+            
+            saveSettings();
+            applySettings();
+            
+            // Show save confirmation
+            const saveBtn = document.getElementById('save-settings');
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = 'SAVED!';
+            saveBtn.style.background = settings.primaryColor;
+            saveBtn.style.color = settings.backgroundColor;
+            setTimeout(() => {
+                saveBtn.textContent = originalText;
+                saveBtn.style.background = '';
+                saveBtn.style.color = '';
+            }, 1000);
+        });
+
+        document.getElementById('reset-settings').addEventListener('click', () => {
+            settings = {
+                primaryColor: '#33ff33',
+                backgroundColor: '#000000',
+                secondaryColor: '#111111',
+                timezone: 'local',
+                matrixRain: true,
+                clockGlitch: true,
+                terminalMessages: true,
+                youtubeLink: 'https://youtube.com',
+                githubLink: 'https://github.com',
+                emailLink: 'https://mail.google.com'
+            };
+            saveSettings();
+            applySettings();
+        });
+
         // Calendar functionality
         let currentDate = new Date();
         let selectedDate = new Date();
@@ -112,17 +222,29 @@
             renderCalendar();
         });
 
-        // Clock
+        // Clock with timezone support
         function updateClock() {
             const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
+            let timeToShow;
+            
+            if (settings.timezone === 'local') {
+                timeToShow = now;
+            } else if (settings.timezone === 'UTC') {
+                timeToShow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
+            } else {
+                // For other timezones, we'll use a simple offset calculation
+                // In a real app, you'd use a proper timezone library
+                timeToShow = now;
+            }
+            
+            const hours = String(timeToShow.getHours()).padStart(2, '0');
+            const minutes = String(timeToShow.getMinutes()).padStart(2, '0');
+            const seconds = String(timeToShow.getSeconds()).padStart(2, '0');
             
             document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
             
-            // Occasionally "glitch" the clock for hacking effect
-            if (Math.random() < 0.01) {
+            // Occasionally "glitch" the clock for hacking effect (if enabled)
+            if (settings.clockGlitch && Math.random() < 0.01) {
                 document.getElementById('clock').textContent = 
                     `${Math.floor(Math.random() * 24)}:${Math.floor(Math.random() * 60)}:${Math.floor(Math.random() * 60)}`;
                 setTimeout(updateClock, 100);
@@ -133,7 +255,7 @@
         
         updateClock();
 
-        // Terminal typing effect
+        // Terminal typing effect (if enabled)
         const commands = [
             "SCANNING NETWORK...",
             "ESTABLISHING SECURE CONNECTION...",
@@ -145,6 +267,8 @@
         ];
         
         function randomCommand() {
+            if (!settings.terminalMessages) return;
+            
             const terminalText = document.querySelector('.terminal-text');
             const newLine = document.createElement('div');
             newLine.className = 'terminal-line';
@@ -260,4 +384,42 @@
         document.getElementById('close-calendar').addEventListener('click', (e) => {
             e.stopPropagation();
             document.getElementById('calendar-sidebar').classList.remove('active');
+        });
+
+        // Settings Sidebar Functionality
+        let isSettingsDragging = false;
+        let settingsOffsetX, settingsOffsetY;
+        
+        const settingsSidebar = document.getElementById('settings-sidebar');
+        
+        document.querySelector('.settings-header').addEventListener('mousedown', (e) => {
+            isSettingsDragging = true;
+            const rect = settingsSidebar.getBoundingClientRect();
+            settingsOffsetX = e.clientX - rect.left;
+            settingsOffsetY = e.clientY - rect.top;
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isSettingsDragging) return;
+            settingsSidebar.style.left = `${e.clientX - settingsOffsetX}px`;
+            settingsSidebar.style.top = `${e.clientY - settingsOffsetY}px`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isSettingsDragging = false;
+        });
+
+        document.getElementById('settings-toggle').addEventListener('click', (e) => {
+            settingsSidebar.classList.toggle('active');
+            if (settingsSidebar.classList.contains('active')) {
+                const btnRect = e.target.getBoundingClientRect();
+                settingsSidebar.style.left = `${btnRect.right - 400}px`;
+                settingsSidebar.style.top = `${btnRect.bottom + 10}px`;
+            }
+        });
+
+        document.getElementById('close-settings').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('settings-sidebar').classList.remove('active');
         });

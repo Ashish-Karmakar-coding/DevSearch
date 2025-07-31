@@ -48,10 +48,91 @@
         </div>
     </div>
 
+    <div id="settings-sidebar" class="settings-sidebar draggable">
+        <div class="settings-header">
+            <span>SETTINGS</span>
+            <button id="close-settings" class="settings-close">X</button>
+        </div>
+        <div class="settings-content">
+            <div class="settings-section">
+                <h3>COLOR THEME</h3>
+                <div class="setting-item">
+                    <label>Primary Color:</label>
+                    <input type="color" id="primary-color" value="#33ff33">
+                </div>
+                <div class="setting-item">
+                    <label>Background Color:</label>
+                    <input type="color" id="bg-color" value="#000000">
+                </div>
+                <div class="setting-item">
+                    <label>Secondary Color:</label>
+                    <input type="color" id="secondary-color" value="#111111">
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3>TIMEZONE</h3>
+                <div class="setting-item">
+                    <label>Timezone:</label>
+                    <select id="timezone-select">
+                        <option value="local">Local Time</option>
+                        <option value="UTC">UTC</option>
+                        <option value="America/New_York">Eastern Time</option>
+                        <option value="America/Chicago">Central Time</option>
+                        <option value="America/Denver">Mountain Time</option>
+                        <option value="America/Los_Angeles">Pacific Time</option>
+                        <option value="Europe/London">London</option>
+                        <option value="Europe/Paris">Paris</option>
+                        <option value="Asia/Tokyo">Tokyo</option>
+                        <option value="Asia/Shanghai">Shanghai</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3>ANIMATIONS</h3>
+                <div class="setting-item">
+                    <label>Matrix Rain:</label>
+                    <input type="checkbox" id="matrix-toggle" checked>
+                </div>
+                <div class="setting-item">
+                    <label>Clock Glitch:</label>
+                    <input type="checkbox" id="glitch-toggle" checked>
+                </div>
+                <div class="setting-item">
+                    <label>Terminal Messages:</label>
+                    <input type="checkbox" id="terminal-toggle" checked>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3>QUICK LINKS</h3>
+                <div class="setting-item">
+                    <label>YouTube:</label>
+                    <input type="text" id="youtube-link" value="https://youtube.com">
+                </div>
+                <div class="setting-item">
+                    <label>GitHub:</label>
+                    <input type="text" id="github-link" value="https://github.com">
+                </div>
+                <div class="setting-item">
+                    <label>Email:</label>
+                    <input type="text" id="email-link" value="https://mail.google.com">
+                </div>
+            </div>
+            
+            <div class="settings-actions">
+                <button id="save-settings" class="settings-button">SAVE</button>
+                <button id="reset-settings" class="settings-button">RESET</button>
+            </div>
+        </div>
+    </div>
+
     <div class="terminal">
         <div class="header">
             <button id="todo-toggle" class="todo-button">TASKS</button>
             <button id="calendar-toggle" class="calendar-button">CALENDAR</button>
+            <button id="settings-toggle" class="settings-button-top">⚙️</button>
             <div class="title">HACKER TERMINAL</div>
             <div class="subtitle">ACCESS GRANTED [ADMIN]</div>
         </div>
