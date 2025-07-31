@@ -54,12 +54,6 @@ Chrome Extension/
 
 ## Customization
 
-### Adding More Quick Links
-Edit the `popup.html` file and find the `.quick-links` section. Add new links like this:
-```html
-<a href="https://your-site.com" class="quick-link" target="_blank">YOUR SITE</a>
-```
-
 ### Changing Colors
 Modify the CSS variables in the `:root` section:
 ```css
