@@ -10,7 +10,7 @@
 <body>
     <canvas id="matrix-rain" class="matrix-rain"></canvas>
 
-    <div id="todo-sidebar" class="todo-sidebar">
+    <div id="todo-sidebar" class="todo-sidebar draggable">
         <div class="todo-header">
             <span>TASK LIST</span>
             <button id="close-todo" class="todo-close">X</button>
@@ -22,9 +22,36 @@
         </div>
     </div>
 
+    <div id="calendar-sidebar" class="calendar-sidebar draggable">
+        <div class="calendar-header">
+            <span>CALENDAR</span>
+            <button id="close-calendar" class="calendar-close">X</button>
+        </div>
+        <div class="calendar-content">
+            <div class="calendar-nav-container">
+                <button id="prev-month" class="calendar-nav">◀</button>
+                <span id="calendar-title" class="calendar-title">JANUARY 2024</span>
+                <button id="next-month" class="calendar-nav">▶</button>
+            </div>
+            <div class="calendar-grid">
+                <div class="calendar-weekdays">
+                    <div>SUN</div>
+                    <div>MON</div>
+                    <div>TUE</div>
+                    <div>WED</div>
+                    <div>THU</div>
+                    <div>FRI</div>
+                    <div>SAT</div>
+                </div>
+                <div id="calendar-days" class="calendar-days"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="terminal">
         <div class="header">
             <button id="todo-toggle" class="todo-button">TASKS</button>
+            <button id="calendar-toggle" class="calendar-button">CALENDAR</button>
             <div class="title">HACKER TERMINAL</div>
             <div class="subtitle">ACCESS GRANTED [ADMIN]</div>
         </div>
@@ -69,6 +96,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js"> </script>
 </body>
 </html>

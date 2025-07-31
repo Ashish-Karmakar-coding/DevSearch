@@ -1,4 +1,4 @@
-// Matrix rain effect
+ // Matrix rain effect
         const canvas = document.getElementById('matrix-rain');
         const ctx = canvas.getContext('2d');
         
@@ -40,6 +40,77 @@
         };
         
         setInterval(draw, 30);
+
+        // Calendar functionality
+        let currentDate = new Date();
+        let selectedDate = new Date();
+
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            const monthNames = [
+                'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
+                'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
+            ];
+            
+            document.getElementById('calendar-title').textContent = `${monthNames[month]} ${year}`;
+            
+            const calendarDays = document.getElementById('calendar-days');
+            calendarDays.innerHTML = '';
+            
+            const today = new Date();
+            
+            for (let i = 0; i < 42; i++) {
+                const date = new Date(startDate);
+                date.setDate(startDate.getDate() + i);
+                
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = date.getDate();
+                
+                // Check if it's today
+                if (date.toDateString() === today.toDateString()) {
+                    dayElement.classList.add('today');
+                }
+                
+                // Check if it's from other month
+                if (date.getMonth() !== month) {
+                    dayElement.classList.add('other-month');
+                }
+                
+                // Check if it's selected
+                if (date.toDateString() === selectedDate.toDateString()) {
+                    dayElement.classList.add('selected');
+                }
+                
+                dayElement.addEventListener('click', () => {
+                    selectedDate = new Date(date);
+                    renderCalendar();
+                });
+                
+                calendarDays.appendChild(dayElement);
+            }
+        }
+
+        // Initialize calendar
+        renderCalendar();
+
+        // Calendar navigation
+        document.getElementById('prev-month').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+
+        document.getElementById('next-month').addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
 
         // Clock
         function updateClock() {
@@ -93,14 +164,41 @@
         setTimeout(randomCommand, 3000);
 
         // TODO List Functionality
-        document.getElementById('todo-toggle').addEventListener('click', () => {
-            document.getElementById('todo-sidebar').classList.add('active');
-            document.getElementById('todo-toggle').style.display = 'none';
+        let isDragging = false;
+        let offsetX, offsetY;
+        
+        const todoSidebar = document.getElementById('todo-sidebar');
+        
+        document.querySelector('.todo-header').addEventListener('mousedown', (e) => {
+            isDragging = true;
+            const rect = todoSidebar.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            e.preventDefault();
         });
 
-        document.getElementById('close-todo').addEventListener('click', () => {
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            todoSidebar.style.left = `${e.clientX - offsetX}px`;
+            todoSidebar.style.top = `${e.clientY - offsetY}px`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        document.getElementById('todo-toggle').addEventListener('click', (e) => {
+            todoSidebar.classList.toggle('active');
+            if (todoSidebar.classList.contains('active')) {
+                const btnRect = e.target.getBoundingClientRect();
+                todoSidebar.style.left = `${btnRect.left}px`;
+                todoSidebar.style.top = `${btnRect.bottom + 10}px`;
+            }
+        });
+
+        document.getElementById('close-todo').addEventListener('click', (e) => {
+            e.stopPropagation();
             document.getElementById('todo-sidebar').classList.remove('active');
-            document.getElementById('todo-toggle').style.display = 'block';
         });
 
         document.getElementById('add-todo').addEventListener('click', addTodo);
@@ -125,3 +223,41 @@
                 });
             }
         }
+
+        // Calendar Sidebar Functionality
+        let isCalendarDragging = false;
+        let calendarOffsetX, calendarOffsetY;
+        
+        const calendarSidebar = document.getElementById('calendar-sidebar');
+        
+        document.querySelector('.calendar-header').addEventListener('mousedown', (e) => {
+            isCalendarDragging = true;
+            const rect = calendarSidebar.getBoundingClientRect();
+            calendarOffsetX = e.clientX - rect.left;
+            calendarOffsetY = e.clientY - rect.top;
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isCalendarDragging) return;
+            calendarSidebar.style.left = `${e.clientX - calendarOffsetX}px`;
+            calendarSidebar.style.top = `${e.clientY - calendarOffsetY}px`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isCalendarDragging = false;
+        });
+
+        document.getElementById('calendar-toggle').addEventListener('click', (e) => {
+            calendarSidebar.classList.toggle('active');
+            if (calendarSidebar.classList.contains('active')) {
+                const btnRect = e.target.getBoundingClientRect();
+                calendarSidebar.style.left = `${btnRect.left}px`;
+                calendarSidebar.style.top = `${btnRect.bottom + 10}px`;
+            }
+        });
+
+        document.getElementById('close-calendar').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('calendar-sidebar').classList.remove('active');
+        });
