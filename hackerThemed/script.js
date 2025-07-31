@@ -1,4 +1,72 @@
- // Matrix rain effect
+         // Settings functionality - Load first before matrix rain
+        let settings = {
+            primaryColor: '#33ff33',
+            backgroundColor: '#000000',
+            secondaryColor: '#111111',
+            timezone: 'local',
+            matrixRain: true,
+            clockGlitch: true,
+            terminalMessages: true,
+            youtubeLink: 'https://youtube.com',
+            githubLink: 'https://github.com',
+            emailLink: 'https://mail.google.com'
+        };
+
+        // Load settings from localStorage immediately
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('hackerTerminalSettings');
+            if (savedSettings) {
+                settings = { ...settings, ...JSON.parse(savedSettings) };
+            }
+            applySettings();
+        }
+
+        // Save settings to localStorage
+        function saveSettings() {
+            localStorage.setItem('hackerTerminalSettings', JSON.stringify(settings));
+        }
+
+        // Apply settings to the interface
+        function applySettings() {
+            // Update CSS variables
+            document.documentElement.style.setProperty('--hacker-green', settings.primaryColor);
+            document.documentElement.style.setProperty('--hacker-dark', settings.backgroundColor);
+            document.documentElement.style.setProperty('--hacker-gray', settings.secondaryColor);
+            
+            // Update matrix rain color immediately
+            if (typeof updateMatrixRainColor === 'function') {
+                updateMatrixRainColor(settings.primaryColor);
+            }
+            
+            // Update quick links
+            const youtubeLink = document.querySelector('.quick-link[href*="youtube"]');
+            const githubLink = document.querySelector('.social-link[href*="github"]');
+            const emailLink = document.querySelector('.quick-link[href*="mail.google"]');
+            if (youtubeLink) youtubeLink.href = settings.youtubeLink;
+            if (githubLink) githubLink.href = settings.githubLink;
+            if (emailLink) emailLink.href = settings.emailLink;
+            
+            // Update matrix rain visibility
+            if (!settings.matrixRain) {
+                canvas.style.display = 'none';
+            } else {
+                canvas.style.display = 'block';
+            }
+            
+            // Update settings form
+            document.getElementById('primary-color').value = settings.primaryColor;
+            document.getElementById('bg-color').value = settings.backgroundColor;
+            document.getElementById('secondary-color').value = settings.secondaryColor;
+            document.getElementById('timezone-select').value = settings.timezone;
+            document.getElementById('matrix-toggle').checked = settings.matrixRain;
+            document.getElementById('glitch-toggle').checked = settings.clockGlitch;
+            document.getElementById('terminal-toggle').checked = settings.terminalMessages;
+            document.getElementById('youtube-link').value = settings.youtubeLink;
+            document.getElementById('github-link').value = settings.githubLink;
+            document.getElementById('email-link').value = settings.emailLink;
+        }
+
+        // Matrix rain effect
         const canvas = document.getElementById('matrix-rain');
         const ctx = canvas.getContext('2d');
         
@@ -21,11 +89,17 @@
             rainDrops[x] = 1;
         }
         
+        // Function to update matrix rain color
+        function updateMatrixRainColor(color) {
+            ctx.fillStyle = color;
+        }
+
         const draw = () => {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            ctx.fillStyle = '#00FF00';
+            // Use the current primary color for matrix rain
+            ctx.fillStyle = settings.primaryColor || '#00FF00';
             ctx.font = fontSize + 'px Courier New';
             
             for (let i = 0; i < rainDrops.length; i++) {
@@ -39,20 +113,42 @@
             }
         };
         
+        // Load settings first, then start matrix rain
+        loadSettings();
         setInterval(draw, 30);
 
-        // Settings functionality
-        let settings = {
-            primaryColor: '#33ff33',
-            backgroundColor: '#000000',
-            secondaryColor: '#111111',
-            timezone: 'local',
-            matrixRain: true,
-            clockGlitch: true,
-            terminalMessages: true,
-            youtubeLink: 'https://youtube.com',
-            githubLink: 'https://github.com',
-            emailLink: 'https://mail.google.com'
+        // Color presets
+        const colorPresets = {
+            hacker: {
+                primary: '#33ff33',
+                background: '#000000',
+                secondary: '#111111'
+            },
+            cyberpunk: {
+                primary: '#00d4ff',
+                background: '#0a0a0a',
+                secondary: '#1a1a2e'
+            },
+            matrix: {
+                primary: '#ff3333',
+                background: '#000000',
+                secondary: '#1a0000'
+            },
+            neon: {
+                primary: '#ff69b4',
+                background: '#0a0a0a',
+                secondary: '#1a0a1a'
+            },
+            amber: {
+                primary: '#ffa500',
+                background: '#000000',
+                secondary: '#1a1a00'
+            },
+            purple: {
+                primary: '#9932cc',
+                background: '#0a0a0a',
+                secondary: '#1a0a1a'
+            }
         };
 
         // Load settings from localStorage
@@ -76,13 +172,18 @@
             document.documentElement.style.setProperty('--hacker-dark', settings.backgroundColor);
             document.documentElement.style.setProperty('--hacker-gray', settings.secondaryColor);
             
+            // Update matrix rain color immediately
+            updateMatrixRainColor(settings.primaryColor);
+            
             // Update quick links
             const youtubeLink = document.querySelector('.quick-link[href*="youtube"]');
             const githubLink = document.querySelector('.social-link[href*="github"]');
+            const emailLink = document.querySelector('.quick-link[href*="mail.google"]');
             if (youtubeLink) youtubeLink.href = settings.youtubeLink;
             if (githubLink) githubLink.href = settings.githubLink;
+            if (emailLink) emailLink.href = settings.emailLink;
             
-            // Update matrix rain
+            // Update matrix rain visibility
             if (!settings.matrixRain) {
                 canvas.style.display = 'none';
             } else {
@@ -104,6 +205,68 @@
 
         // Initialize settings
         loadSettings();
+
+        // Color preset event listeners
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const preset = btn.getAttribute('data-preset');
+                const colors = colorPresets[preset];
+                
+                settings.primaryColor = colors.primary;
+                settings.backgroundColor = colors.background;
+                settings.secondaryColor = colors.secondary;
+                
+                // Update color inputs
+                document.getElementById('primary-color').value = colors.primary;
+                document.getElementById('bg-color').value = colors.background;
+                document.getElementById('secondary-color').value = colors.secondary;
+                
+                applySettings();
+                
+                // Visual feedback
+                btn.style.background = colors.primary;
+                btn.style.color = colors.background;
+                setTimeout(() => {
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }, 500);
+            });
+        });
+
+        // Real-time color updates
+        document.getElementById('primary-color').addEventListener('input', (e) => {
+            settings.primaryColor = e.target.value;
+            document.documentElement.style.setProperty('--hacker-green', e.target.value);
+            updateMatrixRainColor(e.target.value);
+        });
+
+        document.getElementById('bg-color').addEventListener('input', (e) => {
+            settings.backgroundColor = e.target.value;
+            document.documentElement.style.setProperty('--hacker-dark', e.target.value);
+        });
+
+        document.getElementById('secondary-color').addEventListener('input', (e) => {
+            settings.secondaryColor = e.target.value;
+            document.documentElement.style.setProperty('--hacker-gray', e.target.value);
+        });
+
+        // Real-time animation toggles
+        document.getElementById('matrix-toggle').addEventListener('change', (e) => {
+            settings.matrixRain = e.target.checked;
+            if (!e.target.checked) {
+                canvas.style.display = 'none';
+            } else {
+                canvas.style.display = 'block';
+            }
+        });
+
+        document.getElementById('glitch-toggle').addEventListener('change', (e) => {
+            settings.clockGlitch = e.target.checked;
+        });
+
+        document.getElementById('terminal-toggle').addEventListener('change', (e) => {
+            settings.terminalMessages = e.target.checked;
+        });
 
         // Settings event listeners
         document.getElementById('save-settings').addEventListener('click', () => {

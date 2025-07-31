@@ -262,6 +262,65 @@
             text-shadow: 0 0 5px var(--hacker-green);
         }
 
+        /* Color Presets */
+        .color-presets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .preset-btn {
+            background: var(--hacker-dark);
+            border: 1px solid var(--hacker-green);
+            color: var(--hacker-green);
+            padding: 8px 12px;
+            font-family: var(--terminal-font);
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .preset-btn:hover {
+            background: var(--hacker-green);
+            color: var(--hacker-dark);
+            box-shadow: 0 0 10px var(--hacker-green);
+            transform: scale(1.05);
+        }
+
+        .preset-btn[data-preset="hacker"] {
+            border-color: #33ff33;
+            color: #33ff33;
+        }
+
+        .preset-btn[data-preset="cyberpunk"] {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        .preset-btn[data-preset="matrix"] {
+            border-color: #ff3333;
+            color: #ff3333;
+        }
+
+        .preset-btn[data-preset="neon"] {
+            border-color: #ff69b4;
+            color: #ff69b4;
+        }
+
+        .preset-btn[data-preset="amber"] {
+            border-color: #ffa500;
+            color: #ffa500;
+        }
+
+        .preset-btn[data-preset="purple"] {
+            border-color: #9932cc;
+            color: #9932cc;
+        }
+
         .setting-item {
             display: flex;
             justify-content: space-between;
