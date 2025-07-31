@@ -456,7 +456,7 @@
             padding: 20px;
             box-sizing: border-box;
             backdrop-filter: blur(10px);
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 30px var(--hacker-green);
             display: none;
             overflow-y: auto;
             max-height: 80vh;
@@ -651,7 +651,7 @@
             padding: 20px;
             box-sizing: border-box;
             backdrop-filter: blur(10px);
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 30px var(--hacker-green);
             display: none;
             overflow-y: auto;
             max-height: 80vh;

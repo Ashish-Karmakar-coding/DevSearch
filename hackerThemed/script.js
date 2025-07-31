@@ -38,6 +38,11 @@
                 updateMatrixRainColor(settings.primaryColor);
             }
             
+            // Force re-render of all elements with CSS variables
+            document.body.style.setProperty('--hacker-green', settings.primaryColor);
+            document.body.style.setProperty('--hacker-dark', settings.backgroundColor);
+            document.body.style.setProperty('--hacker-gray', settings.secondaryColor);
+            
             // Update quick links
             const youtubeLink = document.querySelector('.quick-link[href*="youtube"]');
             const githubLink = document.querySelector('.social-link[href*="github"]');
