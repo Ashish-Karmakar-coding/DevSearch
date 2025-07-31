@@ -197,7 +197,7 @@
         .settings-button-top:hover {
             background: rgba(0, 30, 0, 0.8);
             text-shadow: 0 0 10px var(--hacker-green);
-            box-shadow: -5px 0 20px rgba(0, 255, 0, 0.5);
+            box-shadow: -5px 0 20px var(--hacker-green);
             transform: translateX(-15px) scale(1.05);
             transform-origin: right center;
         }
@@ -214,9 +214,42 @@
             padding: 20px;
             box-sizing: border-box;
             backdrop-filter: blur(10px);
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 30px var(--hacker-green);
             display: none;
             overflow-y: auto;
+        }
+
+        /* Custom Scrollbar for Settings */
+        .settings-sidebar::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .settings-sidebar::-webkit-scrollbar-track {
+            background: var(--hacker-dark);
+            border-radius: 6px;
+            border: 1px solid var(--hacker-green);
+        }
+
+        .settings-sidebar::-webkit-scrollbar-thumb {
+            background: var(--hacker-green);
+            border-radius: 6px;
+            border: 1px solid var(--hacker-dark);
+            box-shadow: 0 0 5px var(--hacker-green);
+        }
+
+        .settings-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(51, 255, 51, 0.8);
+            box-shadow: 0 0 10px var(--hacker-green);
+        }
+
+        .settings-sidebar::-webkit-scrollbar-corner {
+            background: var(--hacker-dark);
+        }
+
+        /* Firefox scrollbar */
+        .settings-sidebar {
+            scrollbar-width: thin;
+            scrollbar-color: var(--hacker-green) var(--hacker-dark);
         }
 
         .settings-sidebar.active {
@@ -292,8 +325,8 @@
         }
 
         .preset-btn[data-preset="hacker"] {
-            border-color: #33ff33;
-            color: #33ff33;
+            border-color: var(--hacker-green);
+            color: var(--hacker-green);
         }
 
         .preset-btn[data-preset="cyberpunk"] {
@@ -425,6 +458,41 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
             display: none;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        /* Custom Scrollbar for Calendar Sidebar */
+        .calendar-sidebar::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .calendar-sidebar::-webkit-scrollbar-track {
+            background: var(--hacker-dark);
+            border-radius: 6px;
+            border: 1px solid var(--hacker-green);
+        }
+
+        .calendar-sidebar::-webkit-scrollbar-thumb {
+            background: var(--hacker-green);
+            border-radius: 6px;
+            border: 1px solid var(--hacker-dark);
+            box-shadow: 0 0 5px var(--hacker-green);
+        }
+
+        .calendar-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(51, 255, 51, 0.8);
+            box-shadow: 0 0 10px var(--hacker-green);
+        }
+
+        .calendar-sidebar::-webkit-scrollbar-corner {
+            background: var(--hacker-dark);
+        }
+
+        /* Firefox scrollbar for Calendar */
+        .calendar-sidebar {
+            scrollbar-width: thin;
+            scrollbar-color: var(--hacker-green) var(--hacker-dark);
         }
 
         .calendar-sidebar.active {
@@ -449,7 +517,7 @@
         .calendar-button:hover {
             background: rgba(0, 30, 0, 0.8);
             text-shadow: 0 0 10px var(--hacker-green);
-            box-shadow: 5px 0 20px rgba(0, 255, 0, 0.5);
+            box-shadow: 5px 0 20px var(--hacker-green);
             transform: translateX(15px) scale(1.05);
             transform-origin: left center;
         }
@@ -585,6 +653,41 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
             display: none;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        /* Custom Scrollbar for Todo Sidebar */
+        .todo-sidebar::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .todo-sidebar::-webkit-scrollbar-track {
+            background: var(--hacker-dark);
+            border-radius: 6px;
+            border: 1px solid var(--hacker-green);
+        }
+
+        .todo-sidebar::-webkit-scrollbar-thumb {
+            background: var(--hacker-green);
+            border-radius: 6px;
+            border: 1px solid var(--hacker-dark);
+            box-shadow: 0 0 5px var(--hacker-green);
+        }
+
+        .todo-sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(51, 255, 51, 0.8);
+            box-shadow: 0 0 10px var(--hacker-green);
+        }
+
+        .todo-sidebar::-webkit-scrollbar-corner {
+            background: var(--hacker-dark);
+        }
+
+        /* Firefox scrollbar for Todo */
+        .todo-sidebar {
+            scrollbar-width: thin;
+            scrollbar-color: var(--hacker-green) var(--hacker-dark);
         }
 
         .todo-sidebar.active {
@@ -614,7 +717,7 @@
         .todo-button:hover {
             background: rgba(0, 30, 0, 0.8);
             text-shadow: 0 0 10px var(--hacker-green);
-            box-shadow: 5px 0 20px rgba(0, 255, 0, 0.5);
+            box-shadow: 5px 0 20px var(--hacker-green);
             transform: translateX(15px) scale(1.05);
             transform-origin: left center;
         }
