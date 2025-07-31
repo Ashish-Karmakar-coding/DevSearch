@@ -1,7 +1,7 @@
-  :root {
-            --hacker-green: #00ff00;
-            --hacker-dark: #0a0a0a;
-            --hacker-gray: #222222;
+        :root {
+            --hacker-green: #33ff33;
+            --hacker-dark: #000000;
+            --hacker-gray: #111111;
             --terminal-font: 'Courier New', monospace;
         }
 
@@ -91,6 +91,7 @@
         }
 
         .clock {
+            font-family: 'Courier New', monospace;
             font-size: 1.5rem;
             letter-spacing: 0.2rem;
             text-shadow: 0 0 5px var(--hacker-green);
@@ -126,6 +127,7 @@
         }
 
         .terminal-line {
+            font-family: 'Courier New', monospace;
             margin-bottom: 0.2rem;
         }
 
@@ -180,40 +182,50 @@
             left: -300px;
             top: 0;
             height: 100%;
-            width: 280px;
-            background: rgba(34, 34, 34, 0.85);
-            border-right: 1px solid var(--hacker-green);
-            transition: left 0.3s ease;
+            width: 300px;
+            background: rgba(5, 5, 5, 0.98);
+            border-right: 4px solid var(--hacker-green);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             z-index: 99;
-            padding: 10px;
+            padding: 20px;
             box-sizing: border-box;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
+            box-shadow: 15px 0 30px rgba(0, 255, 0, 0.4);
         }
 
         .todo-button {
             position: fixed;
-            left: 20px;
+            left: 10px;
             top: 20px;
-            padding: 0.8rem 1.2rem;
-            background: rgba(34, 34, 34, 0.85);
-            border: 1px solid var(--hacker-green);
+            padding: 0.8rem 1.5rem;
+            background: rgba(10, 10, 10, 0.95);
+            border: none;
+            border-left: 5px solid var(--hacker-green);
             color: var(--hacker-green);
             font-family: var(--terminal-font);
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             z-index: 100;
-            backdrop-filter: blur(5px);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 3px 0 10px rgba(0, 255, 0, 0.3);
         }
 
         .todo-button:hover {
-            background: rgba(0, 255, 0, 0.3);
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-            transform: translateX(5px);
+            background: rgba(0, 30, 0, 0.8);
+            text-shadow: 0 0 10px var(--hacker-green);
+            box-shadow: 5px 0 20px rgba(0, 255, 0, 0.5);
+            transform: translateX(15px) scale(1.05);
+            transform-origin: left center;
         }
 
         .todo-sidebar.active {
             left: 0;
+        }
+        
+        .todo-sidebar.active + .terminal .todo-button {
+            display: none;
         }
 
         .todo-header {
@@ -221,6 +233,10 @@
             justify-content: space-between;
             margin-bottom: 15px;
             font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px dashed var(--hacker-green);
+            padding-bottom: 10px;
         }
 
         .todo-close {
@@ -237,16 +253,35 @@
         }
 
         #todo-list li {
-            padding: 5px;
-            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+            padding: 8px 10px;
+            margin: 8px 0;
             border-bottom: 1px dashed var(--hacker-green);
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+            background: rgba(20, 20, 20, 0.5);
+        }
+
+        #todo-list li:hover {
+            background: rgba(0, 50, 0, 0.5);
+            text-shadow: 0 0 5px var(--hacker-green);
         }
 
         #todo-list li button {
-            background: none;
-            border: none;
+            background: rgba(0, 30, 0, 0.7);
+            border: 1px solid var(--hacker-green);
             color: var(--hacker-green);
             cursor: pointer;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        #todo-list li button:hover {
+            background: rgba(200, 0, 0, 0.7);
+            transform: scale(1.2);
         }

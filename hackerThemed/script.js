@@ -1,4 +1,4 @@
-   // Matrix rain effect
+// Matrix rain effect
         const canvas = document.getElementById('matrix-rain');
         const ctx = canvas.getContext('2d');
         
@@ -8,7 +8,7 @@
         const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
         const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const nums = '0123456789';
-        const symbols = '!"#$%&\'()*+,-./:;<=>?@[\\$^_`{|}~';
+        const symbols = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         
         const alphabet = katakana + latin + nums + symbols;
         
@@ -26,7 +26,7 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             ctx.fillStyle = '#00FF00';
-            ctx.font = fontSize + 'px monospace';
+            ctx.font = fontSize + 'px Courier New';
             
             for (let i = 0; i < rainDrops.length; i++) {
                 const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
@@ -94,11 +94,13 @@
 
         // TODO List Functionality
         document.getElementById('todo-toggle').addEventListener('click', () => {
-            document.getElementById('todo-sidebar').classList.toggle('active');
+            document.getElementById('todo-sidebar').classList.add('active');
+            document.getElementById('todo-toggle').style.display = 'none';
         });
 
         document.getElementById('close-todo').addEventListener('click', () => {
             document.getElementById('todo-sidebar').classList.remove('active');
+            document.getElementById('todo-toggle').style.display = 'block';
         });
 
         document.getElementById('add-todo').addEventListener('click', addTodo);
